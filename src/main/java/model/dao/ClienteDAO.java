@@ -4,23 +4,25 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import model.entity.Cliente;
 import model.entity.Endereco;
 
-public class ClienteDAO {
+public class ClienteDAO implements BaseDAO<Cliente>{
+	
 	public Cliente inserir(Cliente novoCliente) {
 		Connection conexao = Banco.getConnection();
-		String sql = " INSERT INTO CLIENTE(NOME,CPF,ENDERECO,LINHAS)" 
-					+ "VALUES (?, ?, ?, ?);";
+		String sql = " INSERT INTO CLIENTE(NOME,CPF,ID_ENDERECO)" 
+					+ "VALUES (?, ?, ?);";
 		
 		PreparedStatement stmt = Banco.getPreparedStatementWithPk(conexao, sql);
 		
 		try {
 			stmt.setString(1, novoCliente.getNome());
 			stmt.setString(2, novoCliente.getCpf());
-			stmt.setEndereco(3, novoCliente.getEndereco());
-			stmt.setLinhas(4, novoCliente.getLinhas());
+			stmt.setInt(3, novoCliente.getEndereco().getId());
+		
 			
 			stmt.execute();
 			
@@ -39,7 +41,7 @@ public class ClienteDAO {
 		boolean atualizou = false;
 		Connection conexao = Banco.getConnection();
 		String sql = " UPDATE CLIENTE "
-					+" SET NOME=?, CPF=?, ENDERECO=?, LINHA=? "
+					+" SET NOME=?, CPF=?, ID_ENDERECO=? "
 					+" WHERE ID=?";
 		
 		PreparedStatement stmt = Banco.getPreparedStatementWithPk(conexao, sql);
@@ -47,9 +49,8 @@ public class ClienteDAO {
 		try {
 			stmt.setString(1, cliente.getNome());
 			stmt.setString(2, cliente.getCpf());
-			stmt.setEndereco(3, cliente.getEndereco());
-			stmt.setLinhas(4, cliente.getLinhas());
-			stmt.setInt(5, cliente.getId());
+			stmt.setInt(3, cliente.getEndereco().getId());
+			stmt.setInt(4, cliente.getId());
 			
 			int linhasAfetadas = stmt.executeUpdate();
 			atualizou = linhasAfetadas > 0;
@@ -59,7 +60,7 @@ public class ClienteDAO {
 		
 		return atualizou;
 	}
-	public boolean remover(int id) {
+	public boolean excluir(int id) {
 		boolean removeu = false;
 		
 		Connection conexao = Banco.getConnection();
@@ -75,6 +76,17 @@ public class ClienteDAO {
 		}		
 		
 		return removeu;
+	}
+
+
+	public Cliente consultar(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ArrayList<Cliente> consultarTodos() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	}

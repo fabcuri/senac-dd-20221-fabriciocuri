@@ -4,12 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import model.entity.Endereco;
 import model.entity.Telefone;
 
-public class TelefoneDAO {
-	public Endereco inserir(Telefone novoTelefone) {
+public class TelefoneDAO implements BaseDAO<Telefone>{
+	public Telefone inserir(Telefone novoTelefone) {
 		Connection conexao = Banco.getConnection();
 		String sql = " INSERT INTO TELEFONE(DDD,NUMERO,TIPO,ATIVO)" 
 					+ "VALUES (?, ?, ?, ?);";
@@ -19,8 +20,8 @@ public class TelefoneDAO {
 		try {
 			stmt.setString(1, novoTelefone.getDdd());
 			stmt.setString(2, novoTelefone.getNumero());
-			stmt.setTipo(3, novoTelefone.getTipo());
-			stmt.setAtivo(4, novoTelefone.isAtivo());
+			stmt.setInt(3, novoTelefone.getTipo());
+			stmt.setBoolean(4, novoTelefone.isAtivo());
 		
 	
 		
@@ -50,8 +51,8 @@ public class TelefoneDAO {
 		try {
 			stmt.setString(1, telefone.getDdd());
 			stmt.setString(2, telefone.getNumero());
-			stmt.setTipo(3, telefone.getTipo());
-			stmt.setAtivo(4, telefone.isAtivo());
+			stmt.setInt(3, telefone.getTipo());
+			stmt.setBoolean(4, telefone.isAtivo());
 			stmt.setInt(5, telefone.getId());
 			
 			int linhasAfetadas = stmt.executeUpdate();
@@ -63,7 +64,7 @@ public class TelefoneDAO {
 		return atualizou;
 	}
 	
-	public boolean remover(int id) {
+	public boolean excluir(int id) {
 		boolean removeu = false;
 		
 		Connection conexao = Banco.getConnection();
@@ -79,5 +80,16 @@ public class TelefoneDAO {
 		}		
 		
 		return removeu;
+	}
+
+
+	public Telefone consultar(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ArrayList<Telefone> consultarTodos() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

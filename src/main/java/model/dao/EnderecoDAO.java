@@ -6,11 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import model.entity.Cliente;
 import model.entity.Endereco;
 
-public class EnderecoDAO {
+public class EnderecoDAO implements BaseDAO<Endereco>{
 
 	public Endereco inserir(Endereco novoEndereco) {
+
 		Connection conexao = Banco.getConnection();
 		String sql = " INSERT INTO ENDERECO(RUA, UF, CIDADE, NUMERO, CEP)" 
 					+ "VALUES (?, ?, ?, ?, ?);";
@@ -63,7 +65,7 @@ public class EnderecoDAO {
 		return atualizou;
 	}
 	
-	public boolean remover(int id) {
+	public boolean excluir(int id) {
 		boolean removeu = false;
 		
 		Connection conexao = Banco.getConnection();
@@ -88,12 +90,19 @@ public class EnderecoDAO {
 		
 		return enderecoConsultado;
 	}
-	
-	public ArrayList<Endereco> consultarTodos(){
-		ArrayList<Endereco> enderecos = new ArrayList<Endereco>();
-		//TODO implementar
-		//SELECT * FROM ENDERECO
-		
-		return enderecos;
+
+	public ArrayList<Endereco> consultarTodos() {
+		// TODO Auto-generated method stub
+		return null;
 	}
+	
+	
 }
+
+	
+
+
+
+
+
+
