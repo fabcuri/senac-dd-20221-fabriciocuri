@@ -1,12 +1,16 @@
 package model.dao;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface BaseDAO<T> {
+	
 	public T inserir(T novoObjeto);
-	public boolean atualizar(T novoObjeto);
-	public boolean excluir(int id);
+	
+	public boolean atualizar(T objeto);
+	
+	public boolean remover(int id);
+	
 	public T consultar(int id);
-	public ArrayList<T> consultarTodos();
-
+	
+	public List<T> consultarTodos();
 }

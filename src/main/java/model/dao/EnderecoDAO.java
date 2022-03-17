@@ -6,13 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import model.entity.Cliente;
 import model.entity.Endereco;
+import model.entity.Telefone;
 
-public class EnderecoDAO implements BaseDAO<Endereco>{
+public class EnderecoDAO {
 
 	public Endereco inserir(Endereco novoEndereco) {
-
 		Connection conexao = Banco.getConnection();
 		String sql = " INSERT INTO ENDERECO(RUA, UF, CIDADE, NUMERO, CEP)" 
 					+ "VALUES (?, ?, ?, ?, ?);";
@@ -65,7 +64,7 @@ public class EnderecoDAO implements BaseDAO<Endereco>{
 		return atualizou;
 	}
 	
-	public boolean excluir(int id) {
+	public boolean remover(int id) {
 		boolean removeu = false;
 		
 		Connection conexao = Banco.getConnection();
@@ -85,24 +84,36 @@ public class EnderecoDAO implements BaseDAO<Endereco>{
 	
 	public Endereco consultar(int id) {
 		Endereco enderecoConsultado = null;
-		//TODO implementar		
-		//SELECT * FROM ENDERECO WHERE ID = ?
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT * FROM ENDERECO "
+					+" WHERE ID=?";
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+		
+		try {
+			stmt.setInt(1, id);
+			ResultSet resultado = stmt.executeQuery();
+			
+			if(resultado.next()) {
+				enderecoConsultado = new Endereco();
+				enderecoConsultado.setId(resultado.getInt("id"));
+				enderecoConsultado.setRua(resultado.getString("rua"));
+				enderecoConsultado.setNumero(resultado.getString("numero"));
+				enderecoConsultado.setCidade(resultado.getString("cidade"));
+				enderecoConsultado.setCep(resultado.getString("cep"));
+				enderecoConsultado.setUf(resultado.getString("uf"));
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar endereço (id:" + id + ". Causa:" + e.getMessage());
+		}
 		
 		return enderecoConsultado;
 	}
-
-	public ArrayList<Endereco> consultarTodos() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public ArrayList<Endereco> consultarTodos(){
+		ArrayList<Endereco> enderecos = new ArrayList<Endereco>();
+		//TODO implementar
+		//SELECT * FROM ENDERECO
+		
+		return enderecos;
 	}
-	
-	
 }
-
-	
-
-
-
-
-
-

@@ -6,13 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import model.entity.Endereco;
+import model.entity.Cliente;
 import model.entity.Telefone;
 
-public class TelefoneDAO implements BaseDAO<Telefone>{
+public class TelefoneDAO implements BaseDAO<Telefone> {
 	public Telefone inserir(Telefone novoTelefone) {
 		Connection conexao = Banco.getConnection();
-		String sql = " INSERT INTO TELEFONE(DDD,NUMERO,TIPO,ATIVO)" 
+		String sql = " INSERT INTO TELEFONE(DDD, NUMERO, TIPO, ATIVO)" 
 					+ "VALUES (?, ?, ?, ?);";
 		
 		PreparedStatement stmt = Banco.getPreparedStatementWithPk(conexao, sql);
@@ -22,9 +22,6 @@ public class TelefoneDAO implements BaseDAO<Telefone>{
 			stmt.setString(2, novoTelefone.getNumero());
 			stmt.setInt(3, novoTelefone.getTipo());
 			stmt.setBoolean(4, novoTelefone.isAtivo());
-		
-	
-		
 			
 			stmt.execute();
 			
@@ -44,7 +41,7 @@ public class TelefoneDAO implements BaseDAO<Telefone>{
 		Connection conexao = Banco.getConnection();
 		String sql = " UPDATE TELEFONE "
 					+" SET DDD=?, NUMERO=?, TIPO=?, ATIVO=? "
-					+" WHERE ID=?";
+					+" WHERE ID=? ";
 		
 		PreparedStatement stmt = Banco.getPreparedStatementWithPk(conexao, sql);
 		
@@ -53,7 +50,6 @@ public class TelefoneDAO implements BaseDAO<Telefone>{
 			stmt.setString(2, telefone.getNumero());
 			stmt.setInt(3, telefone.getTipo());
 			stmt.setBoolean(4, telefone.isAtivo());
-			stmt.setInt(5, telefone.getId());
 			
 			int linhasAfetadas = stmt.executeUpdate();
 			atualizou = linhasAfetadas > 0;
@@ -64,7 +60,7 @@ public class TelefoneDAO implements BaseDAO<Telefone>{
 		return atualizou;
 	}
 	
-	public boolean excluir(int id) {
+	public boolean remover(int id) {
 		boolean removeu = false;
 		
 		Connection conexao = Banco.getConnection();
@@ -81,15 +77,37 @@ public class TelefoneDAO implements BaseDAO<Telefone>{
 		
 		return removeu;
 	}
-
-
+	
 	public Telefone consultar(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Telefone telefoneConsultado = null;
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT * FROM TELEFONE "
+					+" WHERE ID=?";
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+		
+		try {
+			ResultSet resultado = stmt.executeQuery();
+			
+			if(resultado.next()) {
+				telefoneConsultado = new Telefone();
+				telefoneConsultado.setId(resultado.getInt("id"));
+				telefoneConsultado.setDdd(resultado.getString("ddd"));
+				telefoneConsultado.setNumero(resultado.getString("numero"));
+				telefoneConsultado.setTipo(resultado.getInt("tipo"));
+				telefoneConsultado.setAtivo(resultado.getBoolean("ativo"));
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar telefone (id:" + id + ". Causa:" + e.getMessage());
+		}
+		
+		return telefoneConsultado;
 	}
-
-	public ArrayList<Telefone> consultarTodos() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public ArrayList<Telefone> consultarTodos(){
+		ArrayList<Telefone> telefones = new ArrayList<Telefone>();
+		//TODO implementar
+		//SELECT * FROM TELEFONE
+		
+		return telefones;
 	}
 }
