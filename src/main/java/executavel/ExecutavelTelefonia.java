@@ -1,6 +1,6 @@
 package executavel;
-
 import java.util.ArrayList;
+
 
 import javax.swing.JOptionPane;
 
@@ -23,11 +23,11 @@ public class ExecutavelTelefonia {
 //		testarCrudTelefone();
 		//testarCrudLinhaTelefonica();
 		
-		testarCadastroClienteComJOptionPane();
+		//testarCadastroClienteComJOptionPane();		testarCadastroEnderecoComJOptionPane();
 	}
 
 	private static void testarCadastroClienteComJOptionPane() {
-		String cpf = JOptionPane.showInputDialog("Informe o CPF (somente nÃºmeros)");
+		String cpf = JOptionPane.showInputDialog("Informe o CPF (somente números)");
 		String nome = JOptionPane.showInputDialog("Informe o nome completo");
 		
 		//TODO Violando o MVC...
@@ -36,7 +36,7 @@ public class ExecutavelTelefonia {
 		
 		ArrayList<Endereco> enderecos = enderecoDAO.consultarTodos();
 		
-		Endereco enderecoSelecionado = (Endereco) JOptionPane.showInputDialog(null, "Selecione um endereÃ§o",
+		Endereco enderecoSelecionado = (Endereco) JOptionPane.showInputDialog(null, "Selecione um endereço",
 											"Cadastro de novo cliente",
 											JOptionPane.INFORMATION_MESSAGE,
 											null,
@@ -53,6 +53,28 @@ public class ExecutavelTelefonia {
 		}
 	}
 
+	private static void testarCadastroEnderecoComJOptionPane() {
+		
+		String rua = JOptionPane.showInputDialog("Informe a rua");
+		String numero = JOptionPane.showInputDialog("Informe o numero");
+		String cidade = JOptionPane.showInputDialog("Informe o cidade");
+		String uf = JOptionPane.showInputDialog("Informe a UF (abreviada");
+		String cep = JOptionPane.showInputDialog("Informe o cep (somente numeros)");
+		
+		//TODO Violando o MVC...
+		EnderecoDAO enderecoDAO = new EnderecoDAO();
+		Endereco novoEndereco = new Endereco(rua, numero, cidade, uf,cep);
+		novoEndereco = enderecoDAO.inserir(novoEndereco);
+		
+
+		
+		if(novoEndereco.getId() > 0) {
+			JOptionPane.showMessageDialog(null, "Novo endereço salvo!","Sucesso", JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(null, "Erro ao salvar endereço","Erro", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+		
 	private static void testarCrudTelefone() {
 		// TODO Auto-generated method stub
 		
