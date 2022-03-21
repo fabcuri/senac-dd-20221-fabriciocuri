@@ -16,10 +16,10 @@ public class ClienteController {
 			try {
 				Long.parseLong(novo.getCpf());
 			} catch (NumberFormatException excecao) {
-				mensagem = "CPF deve somente números \n";
+				mensagem = "CPF deve somente numeros \n";
 			}
 			
-			mensagem += "CPF deve conter 11 dígitos";
+			mensagem += "CPF deve conter 11 digitos";
 		}
 		
 		if(mensagem.isEmpty()) {
