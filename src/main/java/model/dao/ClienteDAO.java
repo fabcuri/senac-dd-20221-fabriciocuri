@@ -139,4 +139,9 @@ public class ClienteDAO implements BaseDAO<Cliente>{
 		
 		return clientes;
 	}
+
+	public boolean cpfJaCadastrado(String cpf) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
