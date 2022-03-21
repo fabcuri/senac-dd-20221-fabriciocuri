@@ -94,13 +94,7 @@ public class EnderecoDAO {
 			ResultSet resultado = stmt.executeQuery();
 			
 			if(resultado.next()) {
-				enderecoConsultado = new Endereco();
-				enderecoConsultado.setId(resultado.getInt("id"));
-				enderecoConsultado.setRua(resultado.getString("rua"));
-				enderecoConsultado.setNumero(resultado.getString("numero"));
-				enderecoConsultado.setCidade(resultado.getString("cidade"));
-				enderecoConsultado.setCep(resultado.getString("cep"));
-				enderecoConsultado.setUf(resultado.getString("uf"));
+				enderecoConsultado = construirDoResultSet(resultado);
 			}
 		} catch (SQLException e) {
 			System.out.println("Erro ao consultar endereço (id:" + id + ". Causa:" + e.getMessage());
@@ -108,11 +102,36 @@ public class EnderecoDAO {
 		
 		return enderecoConsultado;
 	}
+
+	private Endereco construirDoResultSet(ResultSet resultado) throws SQLException {
+		Endereco enderecoConsultado;
+		enderecoConsultado = new Endereco();
+		enderecoConsultado.setId(resultado.getInt("id"));
+		enderecoConsultado.setRua(resultado.getString("rua"));
+		enderecoConsultado.setNumero(resultado.getString("numero"));
+		enderecoConsultado.setCidade(resultado.getString("cidade"));
+		enderecoConsultado.setCep(resultado.getString("cep"));
+		enderecoConsultado.setUf(resultado.getString("uf"));
+		return enderecoConsultado;
+	}
 	
 	public ArrayList<Endereco> consultarTodos(){
 		ArrayList<Endereco> enderecos = new ArrayList<Endereco>();
-		//TODO implementar
-		//SELECT * FROM ENDERECO
+
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT * FROM ENDERECO ";
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+		
+		try {
+			ResultSet resultado = stmt.executeQuery();
+			
+			while(resultado.next()) {
+				Endereco enderecoConsultado = construirDoResultSet(resultado);
+				enderecos.add(enderecoConsultado);
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar todos os endereços. Causa:" + e.getMessage());
+		}
 		
 		return enderecos;
 	}

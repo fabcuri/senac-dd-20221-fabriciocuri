@@ -15,8 +15,8 @@ public class ClienteDAO implements BaseDAO<Cliente>{
 	
 	public Cliente inserir(Cliente novoCliente) {
 		Connection conexao = Banco.getConnection();
-		String sql = " INSERT INTO CLIENTE(NOME, CPF)" 
-					+ "VALUES (?, ?);";
+		String sql = " INSERT INTO CLIENTE(NOME, CPF, ID_ENDERECO)" 
+					+ "VALUES (?, ?, ?);";
 		
 		//TODO como inserir o endereço e as linhas telefônicas?
 		
@@ -25,6 +25,7 @@ public class ClienteDAO implements BaseDAO<Cliente>{
 		try {
 			stmt.setString(1, novoCliente.getNome());
 			stmt.setString(2, novoCliente.getCpf());
+			stmt.setInt(3, novoCliente.getEndereco().getId());
 			
 			stmt.execute();
 			
@@ -43,7 +44,7 @@ public class ClienteDAO implements BaseDAO<Cliente>{
 		boolean atualizou = false;
 		Connection conexao = Banco.getConnection();
 		String sql = " UPDATE CLIENTE "
-					+" SET NOME=?, CPF=? "
+					+" SET NOME=?, CPF=?, ID_ENDERECO=? "
 					+" WHERE ID=? ";
 		
 		PreparedStatement stmt = Banco.getPreparedStatementWithPk(conexao, sql);
@@ -51,6 +52,8 @@ public class ClienteDAO implements BaseDAO<Cliente>{
 		try {
 			stmt.setString(1, cliente.getNome());
 			stmt.setString(2, cliente.getCpf());
+			stmt.setInt(3, cliente.getEndereco().getId());
+			stmt.setInt(4, cliente.getId());
 			
 			int linhasAfetadas = stmt.executeUpdate();
 			atualizou = linhasAfetadas > 0;
@@ -111,9 +114,10 @@ public class ClienteDAO implements BaseDAO<Cliente>{
 		clienteConsultado.setEndereco(enderecoDoCliente);
 		
 		LinhaTelefonicaDAO linhaDAO = new LinhaTelefonicaDAO();
-		ArrayList<LinhaTelefonica> linhas = linhaDAO.consultarPorIdCliente(resultado.getInt("id_cliente"));
+		ArrayList<LinhaTelefonica> linhas = linhaDAO.consultarPorIdCliente(resultado.getInt("id"));
 		clienteConsultado.setLinhas(linhas);
-		return null;
+		
+		return clienteConsultado;
 	}
 
 	public ArrayList<Cliente> consultarTodos(){

@@ -1,5 +1,6 @@
 package model.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cliente {
@@ -13,6 +14,8 @@ public class Cliente {
 	public Cliente() {
 		super();
 	}
+	
+	
 
 	public Cliente(String nome, String cpf, Endereco endereco, List<LinhaTelefonica> linhas) {
 		super();
@@ -21,8 +24,14 @@ public class Cliente {
 		this.endereco = endereco;
 		this.linhas = linhas;
 	}
-
-
+	
+	public Cliente(String nome, String cpf, Endereco endereco) {
+		super();
+		this.nome = nome;
+		this.cpf = cpf;
+		this.endereco = endereco;
+		this.linhas = new ArrayList<LinhaTelefonica>();
+	}
 
 	public int getId() {
 		return id;
@@ -62,5 +71,11 @@ public class Cliente {
 
 	public void setLinhas(List<LinhaTelefonica> linhas) {
 		this.linhas = linhas;
+	}
+
+	@Override
+	public String toString() {
+		return "Cliente [id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", endereco=" + endereco + ", linhas=" + linhas
+				+ "]";
 	}
 }

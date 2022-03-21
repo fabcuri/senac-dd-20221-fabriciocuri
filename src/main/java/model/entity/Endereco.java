@@ -21,6 +21,11 @@ public class Endereco {
 		this.numero = numero;
 	}
 	
+	@Override
+	public String toString() {
+		return "ENDERECO: " + rua + ", " + numero + " - " + cidade + "/" + uf + " (" + cep + ")";
+	}
+	
 	public int getId() {
 		return id;
 	}

@@ -89,12 +89,7 @@ public class TelefoneDAO implements BaseDAO<Telefone> {
 			ResultSet resultado = stmt.executeQuery();
 			
 			if(resultado.next()) {
-				telefoneConsultado = new Telefone();
-				telefoneConsultado.setId(resultado.getInt("id"));
-				telefoneConsultado.setDdd(resultado.getString("ddd"));
-				telefoneConsultado.setNumero(resultado.getString("numero"));
-				telefoneConsultado.setTipo(resultado.getInt("tipo"));
-				telefoneConsultado.setAtivo(resultado.getBoolean("ativo"));
+				telefoneConsultado = consultarDoResultSet(resultado);
 			}
 		} catch (SQLException e) {
 			System.out.println("Erro ao consultar telefone (id:" + id + ". Causa:" + e.getMessage());
@@ -103,10 +98,34 @@ public class TelefoneDAO implements BaseDAO<Telefone> {
 		return telefoneConsultado;
 	}
 	
+	private Telefone consultarDoResultSet(ResultSet resultado) throws SQLException {
+		Telefone telefoneConsultado = new Telefone();
+		telefoneConsultado.setId(resultado.getInt("id"));
+		telefoneConsultado.setDdd(resultado.getString("ddd"));
+		telefoneConsultado.setNumero(resultado.getString("numero"));
+		telefoneConsultado.setTipo(resultado.getInt("tipo"));
+		telefoneConsultado.setAtivo(resultado.getBoolean("ativo"));
+		
+		return telefoneConsultado;
+	}
+
 	public ArrayList<Telefone> consultarTodos(){
 		ArrayList<Telefone> telefones = new ArrayList<Telefone>();
-		//TODO implementar
-		//SELECT * FROM TELEFONE
+		Connection conexao = Banco.getConnection();
+
+		String sql = " SELECT * FROM TELEFONE ";
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+		
+		try {
+			ResultSet resultado = stmt.executeQuery();
+			
+			while(resultado.next()) {
+				Telefone telefoneConsultado = consultarDoResultSet(resultado);
+				telefones.add(telefoneConsultado);
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar todos os telefones. Causa:" + e.getMessage());
+		}
 		
 		return telefones;
 	}

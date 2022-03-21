@@ -32,6 +32,7 @@ public class LinhaTelefonica {
 		this.dataDesativacao = dataDesativacao;
 	}
 	
+	
 	public int getId() {
 		return id;
 	}
@@ -70,5 +71,11 @@ public class LinhaTelefonica {
 
 	public void setIdCliente(int idCliente) {
 		this.idCliente = idCliente;
+	}
+
+	@Override
+	public String toString() {
+		return "LinhaTelefonica [id=" + id + ", telefone=" + telefone + ", idCliente=" + idCliente + ", dataAtivacao="
+				+ dataAtivacao + ", dataDesativacao=" + dataDesativacao + "]";
 	}
 }
